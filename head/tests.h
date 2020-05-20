@@ -15,6 +15,7 @@
 #define BITS_PER_WORD 32
 
 int run_test_digits(unsigned long (*f)(), void (*s)(unsigned long), unsigned long seed);
+int run_test_dig_fix(unsigned long (*f)(), void (*s)(unsigned long), unsigned long seed);
 int run_test_pairs(unsigned long (*f)(), void (*s)(unsigned long), unsigned long seed);
 int run_test_binary(unsigned long (*f)(), void (*s)(unsigned long), unsigned long seed);
 

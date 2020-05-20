@@ -57,6 +57,37 @@ int run_test_digits(unsigned long (*f)(), void (*s)(unsigned long), unsigned lon
 	return b > CHICUAD_9_5;
 }
 
+int run_test_dig_fix(unsigned long (*f)(), void (*s)(unsigned long), unsigned long seed) {
+	int i, j, index;
+	char buf[TEST_DIGITS_K - 1];
+	float obs[TEST_DIGITS_K];
+	float esp[TEST_DIGITS_K];
+	float b = 0.0;
+	unsigned long n;
+
+	for (i = 0; i < TEST_DIGITS_K; i++) {
+		obs[i] = 0.0;
+		esp[i] = (float)N_EXTRACTIONS * (float)(DIGITS_PER_NUMBER - 2) / (float)TEST_DIGITS_K;
+	}
+
+	(*s)(seed);
+	for (i = 0; i < N_EXTRACTIONS; i++) {
+		n = (*f)();
+		n = n % 100000000;
+		sprintf(buf, "%08lu", n);
+		for (j = 0; j < TEST_DIGITS_K - 2; j++) {
+			index = (int)buf[j] - 48;
+			obs[index]++;
+		}
+	}
+
+	for (i = 0; i < TEST_DIGITS_K; i++) {
+		b += (obs[i] - esp[i]) * (obs[i] - esp[i]) / esp[i];
+	}
+
+	return b > CHICUAD_9_5;
+}
+
 int run_test_pairs(unsigned long (*f)(), void (*s)(unsigned long), unsigned long seed) {
 	int i, count;
 	float obs[TEST_BINARY_PAIRS];
